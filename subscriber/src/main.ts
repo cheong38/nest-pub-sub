@@ -8,10 +8,14 @@ async function bootstrap() {
     transport: Transport.REDIS,
     options: {
       url: 'redis://localhost:6379',
-      retryAttempts: 3
+      retryAttempts: 3,
+      retryDelay: 3000
     }
   })
-  await app.listen(3001);
-  await app.startAllMicroservices()
+
+  await Promise.all([
+    app.startAllMicroservices(),
+    app.listen(3001)
+  ]);
 }
 bootstrap();
